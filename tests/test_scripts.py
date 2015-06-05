@@ -2145,8 +2145,9 @@ def test_split_paired_reads_1_fa():
     # actual output files...
     outfile1 = utils.get_temp_filename('paired.fa.1')
     in_dir = os.path.dirname(outfile1)
+  
     outfile2 = utils.get_temp_filename('paired.fa.2', in_dir)
-
+   
     script = scriptpath('split-paired-reads.py')
     args = [infile]
 
@@ -3247,7 +3248,10 @@ def test_roundtrip_casava_format_2():
 
     infile = utils.get_temp_filename('test.fq')
     outfile = utils.get_temp_filename('test2.fq')
+    outfile1 = infile + '.1' 
+    outfile2 = infile + '.2'
     in_dir = os.path.dirname(infile)
+    
     shutil.copyfile(utils.get_test_data('casava_18-pe.fq'), infile)
 
     _, out, err = utils.runscript('split-paired-reads.py', [infile], in_dir)
@@ -3287,12 +3291,12 @@ def test_roundtrip_commented_format():
     shutil.copyfile(utils.get_test_data('old-style-format-w-comments.fq'),
                     infile)
 
-    _, out, err = utils.runscript('split-paired-reads.py', [infile,
-                                                            '-1', outfile1, '-2', outfile2])
+    _, out, err = utils.runscript('split-paired-reads.py', [infile], in_dir)
 
-    utils.runscript('interleave-reads.py', [outfile1,
-                                            outfile2, '-o',
-                                            outfile], in_dir)
+    utils.runscript('interleave-reads.py', [infile + '.1',
+                                            infile + '.2',
+                                            '-o', outfile], in_dir)
+
     r = open(infile).read()
     r2 = open(outfile).read()
     assert r == r2, (r, r2)
