@@ -2148,7 +2148,7 @@ def test_split_paired_reads_1_fa():
     outfile2 = utils.get_temp_filename('paired.fa.2', in_dir)
 
     script = scriptpath('split-paired-reads.py')
-    args = [infile, '-1', outfile1, '-2', outfile2]
+    args = [infile]
 
     utils.runscript(script, args, in_dir)
 
@@ -2183,7 +2183,7 @@ def test_split_paired_reads_2_fq():
     outfile2 = utils.get_temp_filename('paired.fq.2', in_dir)
 
     script = scriptpath('split-paired-reads.py')
-    args = [infile, '-1', outfile1, '-2', outfile2]
+    args = [infile]
 
     utils.runscript(script, args, in_dir)
 
@@ -2212,10 +2212,9 @@ def test_split_paired_reads_2_mixed_fq_require_pair():
     infile = utils.get_temp_filename('test.fq')
     shutil.copyfile(utils.get_test_data('paired-mixed.fq'), infile)
     in_dir = os.path.dirname(infile)
-    outfile1 = utils.get_temp_filename('paired-mixed.fa.pe')
-    outfile2 = utils.get_temp_filename('paired-mixed.fa.se', in_dir)
     script = scriptpath('split-paired-reads.py')
-    args = [infile, '-p', '-1', outfile1, '-2', outfile2]
+    args = ['-p', infile]
+
     status, out, err = utils.runscript(script, args, in_dir, fail_ok=True)
     assert status == 1
     assert "is not part of a pair" in err
@@ -2226,10 +2225,8 @@ def test_split_paired_reads_2_mixed_fq():
     infile = utils.get_temp_filename('test.fq')
     shutil.copyfile(utils.get_test_data('paired-mixed-2.fq'), infile)
     in_dir = os.path.dirname(infile)
-    outfile1 = utils.get_temp_filename('paired-mixed.fa.pe')
-    outfile2 = utils.get_temp_filename('paired-mixed.fa.se', in_dir)
     script = scriptpath('split-paired-reads.py')
-    args = [infile, '-1', outfile1, '-2', outfile2]
+    args = [infile]
     status, out, err = utils.runscript(script, args, in_dir)
     assert status == 0
     assert "split 11 sequences (7 left, 4 right)" in err, err
@@ -2240,10 +2237,8 @@ def test_split_paired_reads_2_mixed_fq_broken_pairing_format():
     infile = utils.get_temp_filename('test.fq')
     shutil.copyfile(utils.get_test_data('paired-mixed-broken.fq'), infile)
     in_dir = os.path.dirname(infile)
-    outfile1 = utils.get_temp_filename('paired-mixed.fa.pe')
-    outfile2 = utils.get_temp_filename('paired-mixed.fa.se', in_dir)
     script = scriptpath('split-paired-reads.py')
-    args = [infile, '-1', outfile1, '-2', outfile2]
+    args = [infile]
 
     status, out, err = utils.runscript(script, args, in_dir, fail_ok=True)
     assert status == 1
@@ -2263,7 +2258,7 @@ def test_split_paired_reads_3_output_dir():
     outfile2 = utils.get_temp_filename('paired.fq.2', output_dir)
 
     script = scriptpath('split-paired-reads.py')
-    args = [infile, '-1', outfile1, '-2', outfile2]
+    args = ['--output-dir', output_dir, infile]
 
     utils.runscript(script, args)
 
@@ -2336,7 +2331,7 @@ def test_split_paired_reads_3_output_files_left():
     outfile2 = utils.get_temp_filename('paired.fq.2', output_dir)
 
     script = scriptpath('split-paired-reads.py')
-    args = [infile, '-o', output_dir, '-1', outfile1, '-2', outfile2]
+    args = ['-o', output_dir, '-1', outfile1, infile]
     utils.runscript(script, args)
 
     assert os.path.exists(outfile1), outfile1
@@ -2372,7 +2367,7 @@ def test_split_paired_reads_3_output_files_right():
     outfile2 = utils.get_temp_filename('yyy', output_dir)
 
     script = scriptpath('split-paired-reads.py')
-    args = [infile, '-1', outfile1, '-2', outfile2, '-o', output_dir]
+    args = ['-2', outfile2, '-o', output_dir, infile]
     utils.runscript(script, args)
 
     assert os.path.exists(outfile1), outfile1
