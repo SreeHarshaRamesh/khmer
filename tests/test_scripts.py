@@ -2212,6 +2212,7 @@ def test_split_paired_reads_2_mixed_fq_require_pair():
     infile = utils.get_temp_filename('test.fq')
     shutil.copyfile(utils.get_test_data('paired-mixed.fq'), infile)
     in_dir = os.path.dirname(infile)
+
     script = scriptpath('split-paired-reads.py')
     args = ['-p', infile]
 
@@ -2225,8 +2226,10 @@ def test_split_paired_reads_2_mixed_fq():
     infile = utils.get_temp_filename('test.fq')
     shutil.copyfile(utils.get_test_data('paired-mixed-2.fq'), infile)
     in_dir = os.path.dirname(infile)
+
     script = scriptpath('split-paired-reads.py')
     args = [infile]
+
     status, out, err = utils.runscript(script, args, in_dir)
     assert status == 0
     assert "split 11 sequences (7 left, 4 right)" in err, err
@@ -2237,6 +2240,7 @@ def test_split_paired_reads_2_mixed_fq_broken_pairing_format():
     infile = utils.get_temp_filename('test.fq')
     shutil.copyfile(utils.get_test_data('paired-mixed-broken.fq'), infile)
     in_dir = os.path.dirname(infile)
+
     script = scriptpath('split-paired-reads.py')
     args = [infile]
 
@@ -2295,7 +2299,8 @@ def test_split_paired_reads_3_output_files():
     outfile2 = utils.get_temp_filename('yyy', output_dir)
 
     script = scriptpath('split-paired-reads.py')
-    args = [infile, '-1', outfile1, '-2', outfile2]
+    args = ['-1', outfile1, '-2', outfile2, infile]
+
     utils.runscript(script, args)
 
     assert os.path.exists(outfile1), outfile1
@@ -3241,14 +3246,11 @@ def test_roundtrip_casava_format_2():
     # identical to input, when only paired reads are given.
 
     infile = utils.get_temp_filename('test.fq')
-    outfile = utils.get_temp_filename('test1.fq')
+    outfile = utils.get_temp_filename('test2.fq')
     in_dir = os.path.dirname(infile)
-    outfile1 = infile + '.1'
-    outfile2 = infile + '.2'
     shutil.copyfile(utils.get_test_data('casava_18-pe.fq'), infile)
 
-    _, out, err = utils.runscript('split-paired-reads.py', [infile,
-                                                            '-1', outfile1, '-2', outfile2])
+    _, out, err = utils.runscript('split-paired-reads.py', [infile], in_dir)
 
     utils.runscript('interleave-reads.py', [outfile1,
                                             outfile2, '-o', outfile], in_dir)

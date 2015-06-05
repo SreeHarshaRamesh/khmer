@@ -94,6 +94,7 @@ def main():
 
     filenames = [infile]
     check_space(filenames, args.force)
+
     # decide where to put output files - specific directory? or just default?
     if infile == '/dev/stdin':
         if not (args.output_first and args.output_second):
