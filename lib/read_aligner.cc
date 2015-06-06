@@ -1,7 +1,7 @@
 //
-// This file is part of khmer, http://github.com/ged-lab/khmer/, and is
-// Copyright (C) Michigan State University, 2009-2013. It is licensed under
-// the three-clause BSD license; see doc/LICENSE.txt. Contact: ctb@msu.edu
+// This file is part of khmer, https://github.com/dib-lab/khmer/, and is
+// Copyright (C) Michigan State University, 2009-2015. It is licensed under
+// the three-clause BSD license; see LICENSE. Contact: ctb@msu.edu
 //
 #include "read_aligner.hh"
 #include "khmer_exception.hh"
@@ -34,7 +34,7 @@ double GetNull(size_t length)
 
 /*
   Turn two states in to a transition, or disallowed if the
-  transition isn't modeled
+  transition isn't modelled
  */
 Transition get_trans(State s1, State s2)
 {

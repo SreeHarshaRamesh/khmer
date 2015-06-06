@@ -1,7 +1,7 @@
 //
-// This file is part of khmer, http://github.com/ged-lab/khmer/, and is
-// Copyright (C) Michigan State University, 2009-2013. It is licensed under
-// the three-clause BSD license; see doc/LICENSE.txt.
+// This file is part of khmer, https://github.com/dib-lab/khmer/, and is
+// Copyright (C) Michigan State University, 2009-2015. It is licensed under
+// the three-clause BSD license; see LICENSE.
 // Contact: khmer-project@idyll.org
 //
 
@@ -22,12 +22,31 @@ namespace read_parsers
 {
 
 struct NoMoreReadsAvailable : public  khmer_exception {
+    explicit NoMoreReadsAvailable(const char *msg) :
+        khmer_exception(msg) {}
+    NoMoreReadsAvailable() :
+        khmer_exception("No more reads available in this stream.") {}
+};
+
+struct InvalidRead : public  khmer_exception {
+    explicit InvalidRead(const char *msg) :
+        khmer_exception(msg) {}
+    InvalidRead() :
+        khmer_exception("Invalid read") {}
 };
 
 struct UnknownPairReadingMode : public  khmer_exception {
+    explicit UnknownPairReadingMode(const char *msg) :
+        khmer_exception(msg) {}
+    UnknownPairReadingMode() :
+        khmer_exception("Unknown pair reading mode supplied.") {}
 };
 
 struct InvalidReadPair : public  khmer_exception {
+    explicit InvalidReadPair(const char *msg) :
+        khmer_exception(msg) {}
+    InvalidReadPair() :
+        khmer_exception("Invalid read pair detected.") {}
 };
 
 struct Read {
@@ -86,12 +105,13 @@ struct IParser {
 
     size_t		    get_num_reads()
     {
-	    return _num_reads;
+        return _num_reads;
     }
 
 protected:
 
     size_t		_num_reads;
+    bool        _have_qualities;
     regex_t		_re_read_2_nosub;
     regex_t		_re_read_1;
     regex_t		_re_read_2;

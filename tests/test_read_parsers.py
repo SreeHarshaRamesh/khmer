@@ -1,7 +1,7 @@
 #
-# This file is part of khmer, http://github.com/ged-lab/khmer/, and is
-# Copyright (C) Michigan State University, 2009-2013. It is licensed under
-# the three-clause BSD license; see doc/LICENSE.txt.
+# This file is part of khmer, https://github.com/dib-lab/khmer/, and is
+# Copyright (C) Michigan State University, 2009-2015. It is licensed under
+# the three-clause BSD license; see LICENSE.
 # Contact: khmer-project@idyll.org
 #
 
@@ -76,6 +76,19 @@ def test_num_reads_threads():
         thr.join()
 
     assert rparser.num_reads == 100
+
+
+def test_num_reads_truncated():
+
+    n_reads = 0
+    rparser = ReadParser(utils.get_test_data("truncated.fq"))
+    try:
+        for read in rparser:
+            n_reads += 1
+    except IOError as err:
+        assert "Sequence is empty" in str(err), str(err)
+    assert rparser.num_reads == 1, "%d valid reads in file, got %d" % (
+        n_reads, rparser.num_reads)
 
 
 def test_gzip_decompression():
@@ -245,6 +258,17 @@ def test_casava_1_8_pair_mating():
 
     t1.join()
     t2.join()
+
+
+def test_read_truncated():
+
+    rparser = ReadParser(utils.get_test_data("truncated.fq"))
+    try:
+        for read in rparser:
+            pass
+        assert 0, "No exception raised on a truncated file"
+    except IOError as err:
+        assert "Sequence is empty" in str(err), str(err)
 
 
 def test_iterator_identities():
