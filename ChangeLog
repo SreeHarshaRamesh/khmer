@@ -1,6 +1,6 @@
 2015-06-02  Sherine Awad  <drmahmoud@ucdavis.edu>
-   * Fix minor issues in split-paired-reads 
-   * Change split-paired-reads tests accordingly 
+
+   *Change split-paired-reads.py to accept input from stdin.
 
 2015-06-04  Titus Brown  <titus@idyll.org>
 

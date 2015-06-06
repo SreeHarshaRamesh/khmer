@@ -93,15 +93,16 @@ def main():
     infile = args.infile
 
     filenames = [infile]
+    check_input_files(infile, args.force)
     check_space(filenames, args.force)
 
     # decide where to put output files - specific directory? or just default?
     if infile == '/dev/stdin':
         if not (args.output_first and args.output_second):
-            print >>sys.stderr, ("Accepting input from stdin;"
+            print >>sys.stderr, ("Accepting input from stdin; "
                                  "output filenames must be provided.")
             sys.exit(1)
-    if args.output_directory:
+    elif args.output_directory:
         if not os.path.exists(args.output_directory):
             os.makedirs(args.output_directory)
         out1 = args.output_directory + '/' + os.path.basename(infile) + '.1'
